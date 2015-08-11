@@ -328,8 +328,11 @@ rutg:OWLALLDISJP a rut:TestGenerator ;
 rutg:OWLCOMPL a rut:TestGenerator ;
     dcterms:description """Generate all owl:complementOf constrains defined in a schema"""@en ;
     rut:sparqlGenerator """ SELECT DISTINCT ?T1 ?T2 ?DESCRIPTION WHERE {
-                             ?T1 owl:complementOf ?T2 . 
-							 BIND ( concat(str(?T1)," is owl:complementOf with ", str(?T2)) AS ?DESCRIPTION)} """ ;
+                             ?T1 owl:complementOf ?T2 .
+                             BIND ( IF(isBlank(?T1),
+                              concat("Anonymous class is declared owl:complementOf ", str(?T2), ", but these classes are not disjoint."),
+                              concat(str(?T1)," is declared owl:complementOf ", str(?T2), ", but these classes are not disjoint. "))
+                              AS ?DESCRIPTION )}""" ;
     rut:basedOnPattern rutp:OWLDISJC ;
     rut:resultAnnotation [
         a rut:ResultAnnotation ;
